@@ -9,3 +9,6 @@ Deno.test("removeBOM", () => {
   t.assertEquals(CSV.removeBOM("\ufeff" + "a"), "a");
   t.assertEquals(CSV.removeBOM(null), null);
 });
+Deno.test("fetchJSON", async () => {
+  t.assertEquals(await CSV.fetchJSON("test.csv"), [{ a: "1", b: "2" }]);
+});

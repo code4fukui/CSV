@@ -276,6 +276,9 @@ CSV.fetch = async (url) => {
   const csv = CSV.decode(data);
   return csv;
 };
+CSV.fetchJSON = async (url) => {
+  return CSV.toJSON(await CSV.fetch(url));
+};
 CSV.makeTable = (csv) => {
   const c = (tag) => document.createElement(tag);
   const tbl = c("table");
