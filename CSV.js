@@ -1,3 +1,5 @@
+// https://github.com/code4fukui/CSV/
+
 import { SJIS } from "https://code4sabae.github.io/js/SJIS.js";
 
 const CSV = {};
