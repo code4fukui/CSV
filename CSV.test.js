@@ -12,3 +12,6 @@ Deno.test("removeBOM", () => {
 Deno.test("fetchJSON", async () => {
   t.assertEquals(await CSV.fetchJSON("test.csv"), [{ a: "1", b: "2" }]);
 });
+Deno.test("fetchJSON default data", async () => {
+  t.assertEquals(await CSV.fetchJSON("test2.csv", []), []);
+});
