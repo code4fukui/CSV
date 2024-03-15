@@ -1,7 +1,5 @@
 // https://github.com/code4fukui/CSV/
 
-import { SJIS } from "https://code4sabae.github.io/js/SJIS.js";
-
 const CSV = {};
 
 CSV.parse = (s) => CSV.toJSON(CSV.decode(s));
@@ -288,9 +286,15 @@ CSV.fetchUtf8 = async (url) => {
   return csv;
 };
 CSV.fetch = async (url, defdata) => {
-  const data = SJIS.decodeAuto(await CSV.fetchOrLoad(url, defdata));
-  const csv = CSV.decode(data);
-  return csv;
+  try {
+    const data = await CSV.fetchOrLoad(url);
+    const s = new TextDecoder().decode(data);
+    //console.log("csv", csv, "data", data)
+    const csv = CSV.decode(s);
+    return csv;
+  } catch (e) {
+    return defdata;
+  }
 };
 CSV.fetchJSON = async (url, defdata) => {
   return CSV.toJSON(await CSV.fetch(url, defdata));
