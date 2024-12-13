@@ -271,19 +271,32 @@ CSV.fromMarkdown = function (s) {
 CSV.fetchOrLoad = async (fn, defdata = null) => {
   try {
     if (fn.startsWith("https://") || fn.startsWith("http://") || !globalThis.Deno) {
-      return new Uint8Array(await (await fetch(fn)).arrayBuffer());
+      return new Uint8Array(await (await CSV.fetch200(fn)).arrayBuffer());
     } else {
       return await Deno.readFile(fn);
     }
   } catch (e) {
+    //console.log(e)
     if (defdata) {
       return defdata;
     }
     throw e;
   }
 }
+CSV.fetch200 = async (url) => {
+  const res = await fetch(url);
+  //console.log("status fetch200", res.status, Math.floor(res.status / 100));
+  if (Math.floor(res.status / 100) != 2) {
+    await res.body.cancel()
+    //const txt = await res.text();
+    //console.log("TXT", txt)
+    throw new Error(res.status);
+  }
+  return res;
+};
 CSV.fetchUtf8 = async (url) => {
-  const data = await (await fetch(url)).text();
+  const res = CSV.fetch200(url);
+  const data = await res.text();
   const csv = CSV.decode(data);
   return csv;
 };

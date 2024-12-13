@@ -1,3 +1,4 @@
+//import * as t from "https://deno.land/std@0.65.0/testing/asserts.ts";
 import * as t from "https://deno.land/std/testing/asserts.ts";
 import { CSV } from "./CSV.js";
 
@@ -15,3 +16,12 @@ Deno.test("fetchJSON", async () => {
 Deno.test("fetchJSON default data", async () => {
   t.assertEquals(await CSV.fetchJSON("test2.csv", []), []);
 });
+/*
+Deno.test("404", async () => {
+  const url = "https://code4fukui.github.io/mac-address/move/42.csv";
+  t.assertThrowsAsync(async () => await CSV.fetchJSON(url));
+  //t.assertThrows(async () => await CSV.fetchJSON(url));
+  //const res = await CSV.fetchJSON(url);
+  //console.log(res);
+});
+*/
