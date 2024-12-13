@@ -266,38 +266,48 @@ CSV.fromMarkdown = function (s) {
   }
   return res;
 };
-CSV.fetchOrLoad = async (fn, defdata = null) => {
+CSV.fetch200 = async (url) => {
+  const res = await fetch(url);
+  //console.log("status fetch200", res.status, Math.floor(res.status / 100));
+  if (Math.floor(res.status / 100) != 2) {
+    await res.body.cancel()
+    //const txt = await res.text();
+    //console.log("TXT", txt)
+    throw new Error(res.status);
+  }
+  return res;
+};
+CSV.fetchOrLoad = async (fn, defdata) => {
   try {
     if (fn.startsWith("https://") || fn.startsWith("http://") || !globalThis.Deno) {
-      return new Uint8Array(await (await fetch(fn)).arrayBuffer());
+      return new Uint8Array(await (await CSV.fetch200(fn)).arrayBuffer());
     } else {
       return await Deno.readFile(fn);
     }
   } catch (e) {
-    if (defdata) {
+    if (defdata !== undefined) {
       return defdata;
     }
     throw e;
   }
 }
 CSV.fetchUtf8 = async (url) => {
-  const data = await (await fetch(url)).text();
+  const data = await (await CSV.fetch200(url)).text();
   const csv = CSV.decode(data);
   return csv;
 };
 CSV.fetch = async (url, defdata) => {
-  try {
-    const data = await CSV.fetchOrLoad(url);
-    const s = new TextDecoder().decode(data);
-    //console.log("csv", csv, "data", data)
-    const csv = CSV.decode(s);
-    return csv;
-  } catch (e) {
-    return defdata;
-  }
+  const d = await CSV.fetchOrLoad(url, defdata);
+  if (d === defdata) return defdata;
+  //const data = SJIS.decodeAuto(d);
+  const data = new TextDecoder().decode(d);
+  const csv = CSV.decode(data);
+  return csv;
 };
 CSV.fetchJSON = async (url, defdata) => {
-  return CSV.toJSON(await CSV.fetch(url, defdata));
+  const d = await CSV.fetch(url, defdata);
+  if (d === defdata) return defdata;
+  return CSV.toJSON(d);
 };
 CSV.makeTable = (csv) => {
   const c = (tag) => document.createElement(tag);
