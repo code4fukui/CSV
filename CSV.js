@@ -268,7 +268,7 @@ CSV.fromMarkdown = function (s) {
   }
   return res;
 };
-CSV.fetchOrLoad = async (fn, defdata = null) => {
+CSV.fetchOrLoad = async (fn, defdata) => {
   try {
     if (fn.startsWith("https://") || fn.startsWith("http://") || !globalThis.Deno) {
       return new Uint8Array(await (await CSV.fetch200(fn)).arrayBuffer());
@@ -277,7 +277,7 @@ CSV.fetchOrLoad = async (fn, defdata = null) => {
     }
   } catch (e) {
     //console.log(e)
-    if (defdata) {
+    if (defdata !== undefined) {
       return defdata;
     }
     throw e;
@@ -301,12 +301,16 @@ CSV.fetchUtf8 = async (url) => {
   return csv;
 };
 CSV.fetch = async (url, defdata) => {
-  const data = SJIS.decodeAuto(await CSV.fetchOrLoad(url, defdata));
+  const d = await CSV.fetchOrLoad(url, defdata);
+  if (d === defdata) return defdata;
+  const data = SJIS.decodeAuto(d);
   const csv = CSV.decode(data);
   return csv;
 };
 CSV.fetchJSON = async (url, defdata) => {
-  return CSV.toJSON(await CSV.fetch(url, defdata));
+  const d = await CSV.fetch(url, defdata);
+  if (d === defdata) return defdata;
+  return CSV.toJSON(d);
 };
 CSV.makeTable = (csv) => {
   const c = (tag) => document.createElement(tag);
