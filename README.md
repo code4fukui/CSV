@@ -36,3 +36,7 @@ console.log(json);
 ]
 */
 ```
+
+## License
+
+MIT License
