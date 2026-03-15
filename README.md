@@ -1,6 +1,8 @@
 # CSV
 
-A manipulator CSV in JavaScript ES module
+> 日本語のREADMEはこちらです: [README.ja.md](README.ja.md)
+
+A manipulator CSV in JavaScript ES module.
 
 ## Usage
 
@@ -17,7 +19,7 @@ console.log(json);
 
 ### toHieJSON
 
-to make data with hierarchy from csv
+To make data with hierarchy from CSV.
 
 ```JavaScript
 import { toHieJSON } from "https://code4fukui.github.io/CSV/toHieJSON.js";
