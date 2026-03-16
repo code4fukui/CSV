@@ -1,6 +1,6 @@
 # CSV
 
-JavaScriptのES moduleでCSVを操作するツールです。
+JavaScriptのES moduleを使ってCSVを操作するツールです。
 
 ## 機能
 
