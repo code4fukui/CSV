@@ -1,10 +1,8 @@
 # CSV
 
-> 日本語のREADMEはこちらです: [README.ja.md](README.ja.md)
+JavaScript ESモジュール用のCSV操作ライブラリです。
 
-A manipulator CSV in JavaScript ES module.
-
-## Usage
+## 使い方
 
 ```JavaScript
 import { CSV } from "https://code4fukui.github.io/CSV/CSV.js";
@@ -15,11 +13,11 @@ const json = CSV.toJSON(csv);
 console.log(json);
 ```
 
-## utils
+## ユーティリティ
 
 ### toHieJSON
 
-To make data with hierarchy from CSV.
+CSVから階層構造を持つデータを作成します。
 
 ```JavaScript
 import { toHieJSON } from "https://code4fukui.github.io/CSV/toHieJSON.js";
@@ -39,6 +37,6 @@ console.log(json);
 */
 ```
 
-## License
+## ライセンス
 
 MIT License
